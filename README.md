@@ -3,18 +3,22 @@
 Chat naturally ("spent 300 on ice cream", "got salary 50k in bank", "withdrew 2000", "set a limit of 3k for food").
 An LLM agent (LangGraph) turns it into ledger entries in PostgreSQL over two accounts: **cash** and **bank**.
 
-## Architecture
+## Documentation
+- 🏗️ **[Architecture](docs/ARCHITECTURE.md)** - system overview, layers, agent graph, data model (ER), configuration, safety design
+- 🔀 **[Flows](docs/FLOWS.md)** - message routing, cash/bank question, scope guardrail, budgets and alerts, transfers, statement import, month/day views, undo
 
-```
-Telegram ──► bot/handlers ──► agent/runner ──► agent/graph (LangGraph)
- (buttons)     auth, typing       1 thread per       agent(LLM) ⇄ tools (one call per step)
-                                  user, locks               │ interrupt() when cash/bank missing
-                                       │                    ▼
-                          Postgres checkpointer        tools/*  (thin, LLM-facing)
-                          (chat memory + paused Qs)         ▼
-                                                       core/*   (ledger, budgets, reports - no LLM)
-                                                            ▼
-                                                       db/*     (SQLAlchemy models, Postgres)
+## Architecture at a glance
+
+```mermaid
+flowchart LR
+    U["👤 Telegram"] <--> BOT["Bot<br/>handlers · buttons"]
+    BOT -->|"free text"| AG["LangGraph agent<br/>agent → tools → respond"]
+    BOT -->|"menu buttons<br/>(no LLM)"| CORE
+    BOT -->|"PDF"| ST["Statement import"] --> CORE
+    AG --> TOOLS["Tools"] --> CORE["Core<br/>ledger · budgets · reports"]
+    AG --> LLM["☁️ Gemini / OpenAI /<br/>Anthropic / Groq"]
+    CORE --> DB[("PostgreSQL")]
+    AG --> DB
 ```
 
 | Folder | Role |
