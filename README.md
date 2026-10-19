@@ -5,6 +5,7 @@ An LLM agent (LangGraph) turns it into ledger entries in PostgreSQL over two acc
 
 ## Documentation
 - 🏗️ **[Architecture](docs/ARCHITECTURE.md)** - system overview, layers, agent graph, data model (ER), configuration, safety design
+- 🧠 **[State graph](docs/STATE_GRAPH.md)** - how the agent loops: agent → tools → respond, with real traces for 1, 3 and failing tool calls
 - 🔀 **[Flows](docs/FLOWS.md)** - message routing, cash/bank question, scope guardrail, budgets and alerts, transfers, statement import, month/day views, undo
 
 ## Architecture at a glance
