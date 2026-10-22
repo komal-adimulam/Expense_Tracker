@@ -1,0 +1,42 @@
+[project]
+name = "expense-tracker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "komal-adimulam", email = "komal.adimulam@fissionlabs.com" }
+]
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlalchemy[asyncio]>=2.0.30",
+    "asyncpg>=0.29",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "python-telegram-bot>=21.5",
+    "tzdata",
+    "langchain-core>=0.3",
+    "langgraph>=0.4",
+    "langgraph-checkpoint-postgres>=2.0",
+    "psycopg[binary,pool]>=3.2",
+    "langchain-google-genai>=2.0",
+    "langchain-openai>=0.2",
+    "langchain-anthropic>=0.3",
+    "langchain-groq>=0.2",
+    "pypdf>=5.0",
+    "cryptography>=43",
+]
+
+[project.scripts]
+expense-tracker = "expense_tracker:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "pytest-asyncio>=0.24",
+]
+
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13.0"]
+build-backend = "uv_build"
